@@ -30,8 +30,16 @@ humidityData = thingSpeakRead(ChannelIDRead,'Fields',humidityID, ...
     'NumMinutes', 180, 'ReadKey', readAPIKeyStation);
 avgHumidity = mean(humidityData,'omitnan');
 
-% We are only interested in pressure difference.
-pressureChange = pressureData(end) - pressureData(1);
+% We are only interested in pressure difference
+% pressureChange = pressureData(end) - pressureData(1);
+
+% linear regression
+x = (1:numel(pressureData))';
+X = [ones(numel(x),1) , x];
+y = pressureData;
+b = X\y;
+array = X*b;
+pressureChange = array(end) - array(1);
 
 %% Perform weather forecast. Pressure readings in mbar (or hPa)
 if pressureChange < -6
