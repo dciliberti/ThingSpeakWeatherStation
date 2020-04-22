@@ -23,9 +23,11 @@ switch conditionNumber
     case 5
         message = 'probabilmente bel tempo';
     case 6
+        message = 'probabimente piovoso';
+    case 7
         message = 'tempo variabile';
     otherwise
-        message = ' ';
+        message = 'non disponibili';
 end
 
 tweetStatus = ['Previsioni meteo: ', message];

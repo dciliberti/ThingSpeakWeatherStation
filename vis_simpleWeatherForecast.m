@@ -55,22 +55,22 @@ thunderstorm = [1,269;1,268;1,267;1,266;1,265;1,264;1,263;1,262;1,261;1,260;1,25
 
 %% Perform weather forecast. Pressure readings in mbar (or hPa)
 if pressureChange < -6
-    conditionNumber = 1;
-    message = 'a thuderstorm is coming (or worsening)';
+    % conditionNumber = 1;
+    % message = 'a thuderstorm is coming (or worsening)';
     scatter(thunderstorm(:,1), thunderstorm(:,2),'.');
     axis equal
     set(gca, 'Visible','off')
     
 elseif pressureChange >= -6 && pressureChange < -2
-    conditionNumber = 2;
-    message = 'weather worsen in next hours';
+    % conditionNumber = 2;
+    % message = 'weather worsen in next hours';
     scatter(rain(:,1), rain(:,2),'.');
     axis equal
     set(gca, 'Visible','off')
     
 elseif pressureChange > 2
-    conditionNumber = 3;
-    message = 'weather gets better';
+    % conditionNumber = 3;
+    % message = 'weather gets better';
     if dayFlag
         scatter(sunCloud(:,1), sunCloud(:,2),'.');
     else
@@ -80,15 +80,15 @@ elseif pressureChange > 2
     set(gca, 'Visible','off')
     
 elseif avgPressure <= 1000 && avgHumidity >= 70
-    conditionNumber = 4;
-    message = 'probably bad weather';
+    % conditionNumber = 4;
+    % message = 'probably bad weather';
     scatter(clouds(:,1), clouds(:,2),'.');
     axis equal
     set(gca, 'Visible','off')
     
 elseif avgPressure >= 1025 && avgHumidity <= 60
-    conditionNumber = 5;
-    message = 'probably good weather';
+    % conditionNumber = 5;
+    % message = 'probably good weather';
     if dayFlag
         scatter(sun(:,1), sun(:,2),'.');
     else
@@ -97,9 +97,16 @@ elseif avgPressure >= 1025 && avgHumidity <= 60
     axis equal
     set(gca, 'Visible','off')
     
+elseif avgHumidity >= 85
+    % conditionNumber = 6;
+    % message = 'probably rainy';
+    scatter(rain(:,1), rain(:,2),'.');
+    axis equal
+    set(gca, 'Visible','off')
+    
 else
-    conditionNumber = 6;
-    message = 'probably variable weather';
+    % conditionNumber = 7;
+    % message = 'probably variable weather';
     if dayFlag
         scatter(sunCloud(:,1), sunCloud(:,2),'.');
     else
@@ -108,22 +115,3 @@ else
     axis equal
     set(gca, 'Visible','off')
 end
-
-%% React to weather change
-
-% Read previous condition
-conditionNumberCheck = thingSpeakRead(ChannelID,'Fields',4,'ReadKey',readAPIKey);
-
-% Check difference between actual and previous forecast. Used to update a
-% field that will be read by REACT to post a weather forecast message on
-% Twitter, so that forecast will be broadcasted only when weather change.
-if (conditionNumberCheck - conditionNumber) == 0
-    pressureChangeSwitch = 0;
-else
-    pressureChangeSwitch = 1;
-end
-
-% WARNING: it works only if there are at least 15 seconds between calls!
-thingSpeakWrite(ChannelID,'Fields',[4,5],...
-    'Values',[conditionNumber, pressureChangeSwitch], ...
-    'WriteKey',writeAPIKey);

@@ -62,8 +62,12 @@ elseif avgPressure >= 1025 && avgHumidity <= 60
     conditionNumber = 5;
     % message = 'probably good weather';
     
-else
+elseif avgHumidity >= 85
     conditionNumber = 6;
+    % message = 'probably rainy';
+    
+else
+    conditionNumber = 7;
     % message = 'probably variable weather';
 end
 
