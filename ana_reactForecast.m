@@ -15,7 +15,7 @@ switch conditionNumber
     case 1
         message = 'tempesta in arrivo (o in peggioramento)';
     case 2
-        message = 'il tempo peggioa nelle prossime ore';
+        message = 'il tempo peggiora nelle prossime ore';
     case 3
         message = 'il tempo migliora nelle prossime ore';
     case 4
@@ -28,7 +28,7 @@ switch conditionNumber
         message = ' ';
 end
 
-tweetStatus = ['TEST previsioni meteo: ', message];
+tweetStatus = ['Previsioni meteo: ', message];
 
 webwrite('https://api.thingspeak.com/apps/thingtweet/1/statuses/update', ...
     'api_key', thingTweetAPIKey, ...
