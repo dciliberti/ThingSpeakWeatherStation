@@ -39,7 +39,11 @@ X = [ones(numel(x),1) , x];
 y = pressureData;
 b = X\y;
 array = X*b;
-pressureChange = array(end) - array(1);
+if isempty(array) % avoid errors when there are no data
+    pressureChange = 0;
+else
+    pressureChange = array(end) - array(1);
+end
 
 %% Perform weather forecast. Pressure readings in mbar (or hPa)
 if pressureChange < -6
